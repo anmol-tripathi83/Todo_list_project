@@ -1,22 +1,20 @@
-import { useReducer, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import './App.css'
 import AddTodo from './component/AddTodo/AddTodo';
 import TodoList from './component/TodoList/TodoList';
-import TodoContext from './context/TodoContext';
-import todoDispatchContext from './context/todoDispatchContext';
-import todoReducer from './reducers/todoReducer';
+import { bindActionCreators } from 'redux';
+import { addTodo, deleteTodo, editTodo, todoFinished } from './actions/todoActions';
 
 function App() {
-
-  const [list , dispatch] = useReducer(todoReducer, []);
+  // Now we dont want to give access of dispatch method to all components to add avoid adding different actions in argument by other
+  const dispatch = useDispatch();
+  const actions = bindActionCreators({addTodo, deleteTodo, editTodo, todoFinished}, dispatch);  // binds these functions with dispatch now we call using actions object such as actions.addTodo() etc...
 
   return (
-    <TodoContext.Provider value={{list}}>
-      <todoDispatchContext.Provider value={{dispatch}}>
-        <AddTodo />
-        <TodoList />
-      </todoDispatchContext.Provider>
-    </TodoContext.Provider>
+    <>
+    <AddTodo addTodo={actions.addTodo}/>
+    <TodoList deleteTodo={actions.deleteTodo} editTodo={actions.editTodo} todoFinished={actions.todoFinished}/>
+    </>
   );
 }
 

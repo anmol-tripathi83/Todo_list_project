@@ -1,9 +1,12 @@
-import { useContext, useState } from "react";
-import todoDispatchContext from "../../context/todoDispatchContext";
+import { useState } from "react";
+//import {useDispatch} from 'react-redux';    // provided by the react redux
+//import { addTodo } from "../../actions/todoActions";
 
-function AddTodo(){
+
+function AddTodo({addTodo}){
+    // const dispatch = useDispatch();
+
     const [inputText, setInputText] = useState('');
-    const {dispatch} = useContext(todoDispatchContext);
     return (
         <div>
             <input
@@ -13,7 +16,8 @@ function AddTodo(){
                onChange = {e => setInputText(e.target.value)}
             />
             <button onClick={() =>{
-                dispatch({type:'add_todo', payload:{todoText:inputText}});
+                // dispatch(addTodo(inputText));
+                addTodo(inputText);
                 setInputText('');
                 }}>Add</button>
         </div>
